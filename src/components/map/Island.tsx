@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useStore, type Project } from '../../store/useStore';
 import { SEA_PATH_D } from './SeaPath';
 import {

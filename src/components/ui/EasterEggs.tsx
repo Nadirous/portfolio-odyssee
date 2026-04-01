@@ -85,7 +85,7 @@ function Bottle() {
 // Sea monster — appears when idle too long
 function SeaMonster() {
   const [visible, setVisible] = useState(false);
-  const idleTimer = useRef<ReturnType<typeof setTimeout>>();
+  const idleTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     const resetTimer = () => {

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  X, Plus, Trash2, Save, Upload, Eye, EyeOff,
+  X, Plus, Trash2, Upload,
   Map, Palette, FileText, Settings, Lock
 } from 'lucide-react';
 import { Octokit } from '@octokit/rest';

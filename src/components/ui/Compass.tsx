@@ -4,7 +4,6 @@ import { useStore } from '../../store/useStore';
 
 export default function Compass() {
   const { scrollProgress, projects, isListMode } = useStore();
-  const openLogbook = useStore((s) => s.openLogbook);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   if (isListMode) return null;
