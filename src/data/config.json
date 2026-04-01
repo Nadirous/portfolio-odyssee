@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "title": "Portfolio Odyssée",
+    "subtitle": "Navigateur de Projets",
+    "author": "Votre Nom",
+    "description": "Un portfolio narratif où chaque projet est une île à découvrir.",
+    "cvUrl": "",
+    "githubRepo": "",
+    "githubToken": ""
+  },
+  "biome": {
+    "oceanColor": "#04334a",
+    "oceanLightColor": "#0a6690",
+    "parchmentColor": "#fefcf5",
+    "accentColor": "#c0392b",
+    "goldColor": "#d4a017",
+    "musicUrl": "",
+    "ambientSounds": {
+      "waves": "",
+      "wood": ""
+    }
+  },
+  "projects": [
+    {
+      "id": "project-1",
+      "title": "L'Île du Premier Voyage",
+      "shortDescription": "Mon premier projet full-stack",
+      "longDescription": "Une application web complète construite avec React et Node.js. Ce projet m'a permis de maîtriser les fondamentaux du développement moderne.",
+      "position": 15,
+      "images": [],
+      "technologies": ["React", "Node.js", "MongoDB", "Express"],
+      "githubUrl": "",
+      "liveUrl": "",
+      "icon": "palm-tree"
+    },
+    {
+      "id": "project-2",
+      "title": "L'Archipel des APIs",
+      "shortDescription": "Système de microservices",
+      "longDescription": "Architecture distribuée avec plusieurs microservices communiquant via des files de messages. Déployé sur Kubernetes.",
+      "position": 35,
+      "images": [],
+      "technologies": ["TypeScript", "Docker", "Kubernetes", "RabbitMQ"],
+      "githubUrl": "",
+      "liveUrl": "",
+      "icon": "server"
+    },
+    {
+      "id": "project-3",
+      "title": "Le Phare du Design",
+      "shortDescription": "Application de design system",
+      "longDescription": "Un design system complet avec composants réutilisables, documentation Storybook, et tests visuels automatisés.",
+      "position": 55,
+      "images": [],
+      "technologies": ["React", "Storybook", "Figma", "CSS-in-JS"],
+      "githubUrl": "",
+      "liveUrl": "",
+      "icon": "lighthouse"
+    },
+    {
+      "id": "project-4",
+      "title": "Le Trésor Final",
+      "shortDescription": "Intelligence artificielle",
+      "longDescription": "Un système d'IA capable de générer du contenu créatif en utilisant des modèles de langage avancés et du fine-tuning.",
+      "position": 80,
+      "images": [],
+      "technologies": ["Python", "PyTorch", "FastAPI", "React"],
+      "githubUrl": "",
+      "liveUrl": "",
+      "icon": "brain"
+    }
+  ],
+  "adminPassword": "cartographe2024"
+}
