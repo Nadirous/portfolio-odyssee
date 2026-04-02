@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { useStore, type Project } from '../../store/useStore';
-import { SEA_PATH_D } from './SeaPath';
 import {
   PalmtreeIcon, ServerIcon, TowerControlIcon, BrainIcon,
   CodeIcon, DatabaseIcon, GlobeIcon, RocketIcon,
@@ -38,15 +37,16 @@ interface IslandProps {
 export default function Island({ project, index }: IslandProps) {
   const openLogbook = useStore((s) => s.openLogbook);
   const scrollProgress = useStore((s) => s.scrollProgress);
+  const seaPath = useStore((s) => s.seaPath);
 
   const IconComponent = ICON_MAP[project.icon] || GlobeIcon;
 
   // Compute position along path
   const pos = useMemo(() => {
-    const point = getPointOnPath(SEA_PATH_D, project.position / 100);
+    const point = getPointOnPath(seaPath, project.position / 100);
     const offsetX = index % 2 === 0 ? 80 : -80;
     return { x: point.x + offsetX, y: point.y };
-  }, [project.position, index]);
+  }, [seaPath, project.position, index]);
 
   // Visibility: show when scroll progress is near the island's position
   const proximity = Math.abs(scrollProgress * 100 - project.position);

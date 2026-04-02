@@ -5,6 +5,7 @@
     "author": "Votre Nom",
     "description": "Un portfolio narratif où chaque projet est une île à découvrir.",
     "cvUrl": "",
+    "contactEmail": "",
     "githubRepo": "Nadirous/portfolio-odyssee",
     "githubToken": ""
   },
@@ -20,6 +21,7 @@
       "wood": ""
     }
   },
+  "seaPath": "M 400 50 C 250 200, 550 350, 350 500 S 150 700, 400 850 S 650 1000, 350 1150 S 100 1350, 400 1500 S 700 1650, 350 1800 S 50 2000, 400 2150 S 750 2300, 400 2450 S 100 2600, 400 2750 S 650 2900, 400 3050",
   "projects": [
     {
       "id": "project-1",
@@ -28,12 +30,8 @@
       "longDescription": "Une application web complète construite avec React et Node.js. Ce projet m'a permis de maîtriser les fondamentaux du développement moderne.",
       "position": 15,
       "images": [],
-      "technologies": [
-        "React",
-        "Node.js",
-        "MongoDB",
-        "Express"
-      ],
+      "media": [],
+      "technologies": ["React", "Node.js", "MongoDB", "Express"],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "palm-tree"
@@ -45,12 +43,8 @@
       "longDescription": "Architecture distribuée avec plusieurs microservices communiquant via des files de messages. Déployé sur Kubernetes.",
       "position": 35,
       "images": [],
-      "technologies": [
-        "TypeScript",
-        "Docker",
-        "Kubernetes",
-        "RabbitMQ"
-      ],
+      "media": [],
+      "technologies": ["TypeScript", "Docker", "Kubernetes", "RabbitMQ"],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "server"
@@ -62,12 +56,8 @@
       "longDescription": "Un design system complet avec composants réutilisables, documentation Storybook, et tests visuels automatisés.",
       "position": 55,
       "images": [],
-      "technologies": [
-        "React",
-        "Storybook",
-        "Figma",
-        "CSS-in-JS"
-      ],
+      "media": [],
+      "technologies": ["React", "Storybook", "Figma", "CSS-in-JS"],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "lighthouse"
@@ -79,12 +69,8 @@
       "longDescription": "Un système d'IA capable de générer du contenu créatif en utilisant des modèles de langage avancés et du fine-tuning.",
       "position": 80,
       "images": [],
-      "technologies": [
-        "Python",
-        "PyTorch",
-        "FastAPI",
-        "React"
-      ],
+      "media": [],
+      "technologies": ["Python", "PyTorch", "FastAPI", "React"],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "brain"

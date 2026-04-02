@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   X, Plus, Trash2, Upload,
-  Map, Palette, FileText, Settings, Lock
+  Map, Palette, FileText, Settings, Lock, Film, Image as ImageIcon, Download
 } from 'lucide-react';
-import { useStore, type Project } from '../../store/useStore';
+import { useStore, type Project, type ProjectMedia } from '../../store/useStore';
+import PathEditor from './PathEditor';
 
 function AdminLogin({ onAuth }: { onAuth: () => void }) {
   const [password, setPassword] = useState('');
@@ -141,6 +142,78 @@ function ProjectEditor({ project, onChange, onRemove }: {
             className="w-full px-3 py-1.5 text-sm bg-parchment-100 border border-parchment-300 rounded text-ink"
           />
         </div>
+
+        {/* Media management */}
+        <div>
+          <label className="text-xs text-parchment-700 uppercase tracking-wider font-serif">Médias</label>
+          <div className="space-y-2 mt-1">
+            {(project.media || []).map((m, i) => (
+              <div key={m.id} className="flex items-center gap-2 bg-parchment-100 p-2 rounded border border-parchment-300">
+                <div className="text-parchment-600">
+                  {m.type === 'video' ? <Film size={14} /> : m.type === 'pdf' ? <FileText size={14} /> : m.type === 'file' ? <Download size={14} /> : <ImageIcon size={14} />}
+                </div>
+                <select
+                  value={m.type}
+                  onChange={(e) => {
+                    const newMedia = [...(project.media || [])];
+                    newMedia[i] = { ...m, type: e.target.value as ProjectMedia['type'] };
+                    onChange({ media: newMedia });
+                  }}
+                  className="px-1 py-0.5 text-xs bg-white border border-parchment-300 rounded text-ink w-20"
+                >
+                  <option value="image">Image</option>
+                  <option value="video">Vidéo</option>
+                  <option value="pdf">PDF</option>
+                  <option value="file">Fichier</option>
+                </select>
+                <input
+                  value={m.url}
+                  onChange={(e) => {
+                    const newMedia = [...(project.media || [])];
+                    newMedia[i] = { ...m, url: e.target.value };
+                    onChange({ media: newMedia });
+                  }}
+                  placeholder="URL..."
+                  className="flex-1 px-2 py-0.5 text-xs bg-white border border-parchment-300 rounded text-ink"
+                />
+                <input
+                  value={m.title || ''}
+                  onChange={(e) => {
+                    const newMedia = [...(project.media || [])];
+                    newMedia[i] = { ...m, title: e.target.value };
+                    onChange({ media: newMedia });
+                  }}
+                  placeholder="Titre..."
+                  className="w-24 px-2 py-0.5 text-xs bg-white border border-parchment-300 rounded text-ink"
+                />
+                <button
+                  onClick={() => {
+                    const newMedia = (project.media || []).filter((_, j) => j !== i);
+                    onChange({ media: newMedia });
+                  }}
+                  className="p-1 text-accent-400 hover:text-accent-600"
+                >
+                  <Trash2 size={12} />
+                </button>
+              </div>
+            ))}
+            <button
+              onClick={() => {
+                const newMedia: ProjectMedia = {
+                  id: `media-${Date.now()}`,
+                  type: 'image',
+                  url: '',
+                  title: '',
+                };
+                onChange({ media: [...(project.media || []), newMedia] });
+              }}
+              className="w-full py-1.5 border border-dashed border-parchment-400 rounded text-parchment-600 text-xs font-serif hover:border-gold hover:text-gold transition-colors flex items-center justify-center gap-1"
+            >
+              <Plus size={12} />
+              Ajouter un média
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -165,6 +238,7 @@ export default function AdminPanel() {
       longDescription: 'Description détaillée du projet...',
       position: 50,
       images: [],
+      media: [],
       technologies: ['React'],
       githubUrl: '',
       liveUrl: '',
@@ -326,9 +400,13 @@ export default function AdminPanel() {
                     </div>
                   )}
 
-                  {/* Map tab — island positions */}
+                  {/* Map tab — path editor + island positions */}
                   {tab === 'map' && (
                     <div>
+                      <PathEditor />
+
+                      <hr className="border-parchment-400 my-6" />
+
                       <h3 className="font-serif text-ink font-semibold mb-4">Positions des Îles</h3>
                       {projects.map((project) => (
                         <div key={project.id} className="mb-4 p-3 bg-parchment-100 rounded border border-parchment-300">
@@ -402,6 +480,7 @@ export default function AdminPanel() {
                         { key: 'author' as const, label: 'Auteur' },
                         { key: 'description' as const, label: 'Description' },
                         { key: 'cvUrl' as const, label: 'URL du CV (PDF)' },
+                        { key: 'contactEmail' as const, label: 'Email de contact' },
                       ].map(({ key, label }) => (
                         <div key={key}>
                           <label className="text-xs text-parchment-700 uppercase tracking-wider font-serif">{label}</label>

@@ -1,7 +1,8 @@
-import { useEffect, useRef, useMemo, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gsap, ScrollTrigger } from '../../hooks/useGSAP';
 import { useStore } from '../../store/useStore';
-import SeaPath, { MAP_WIDTH, MAP_HEIGHT, SEA_PATH_D } from './SeaPath';
+import SeaPath, { MAP_WIDTH, MAP_HEIGHT } from './SeaPath';
+import OceanBackground from './OceanBackground';
 import Ship from './Ship';
 import Island from './Island';
 
@@ -30,22 +31,16 @@ export default function MapContainer() {
   const pathElRef = useRef<SVGPathElement | null>(null);
   const projects = useStore((s) => s.projects);
   const biome = useStore((s) => s.biome);
+  const seaPath = useStore((s) => s.seaPath);
   const setScrollProgress = useStore((s) => s.setScrollProgress);
   const setShipPosition = useStore((s) => s.setShipPosition);
+  const setSpyglass = useStore((s) => s.setSpyglass);
   const [visible, setVisible] = useState(false);
 
-  const waveData = useMemo(() => {
-    return Array.from({ length: 30 }, (_, i) => ({
-      x: Math.floor((i * 137.5 + 42) % MAP_WIDTH),
-      y: Math.floor((i * 103.7 + 17) % MAP_HEIGHT),
-      dur: 3 + (i % 5) * 0.4,
-      delay: (i % 7) * 0.6,
-    }));
-  }, []);
-
+  // (Re)create the hidden path element whenever seaPath changes
   useEffect(() => {
-    pathElRef.current = createPathElement(SEA_PATH_D);
-  }, []);
+    pathElRef.current = createPathElement(seaPath);
+  }, [seaPath]);
 
   useEffect(() => {
     if (!cameraRef.current || !shipRef.current || !pathElRef.current) return;
@@ -68,6 +63,8 @@ export default function MapContainer() {
       },
     });
 
+    const projectPositions = projects.map((p) => p.position / 100);
+
     const trigger = ScrollTrigger.create({
       trigger: '#map-container',
       start: 'top top',
@@ -86,9 +83,23 @@ export default function MapContainer() {
           `translate(${x}, ${y + bobY}) rotate(${angle + bobR + 90})`
         );
 
-        // Camera: fixed overlay, origin at viewport center.
-        // translate(-x, -y) brings the ship SVG coord to center.
-        camera.style.transform = `translate(${-x}px, ${-y}px)`;
+        // Spyglass zoom: detect proximity to any island
+        let minDist = Infinity;
+        for (const pos of projectPositions) {
+          minDist = Math.min(minDist, Math.abs(progress - pos));
+        }
+        const spyglassThreshold = 0.04; // 4% of path length
+        const isNearIsland = minDist < spyglassThreshold;
+        const spyProgress = isNearIsland
+          ? 1 - minDist / spyglassThreshold
+          : 0;
+
+        setSpyglass(isNearIsland, spyProgress);
+
+        // Camera zoom when near island
+        const zoomScale = isNearIsland ? 1 + spyProgress * 0.3 : 1;
+        camera.style.transform = `translate(${-x}px, ${-y}px) scale(${zoomScale})`;
+        camera.style.transition = 'transform 0.3s ease-out';
 
         setShipPosition({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
       },
@@ -98,7 +109,7 @@ export default function MapContainer() {
       trigger.kill();
       bobTl.kill();
     };
-  }, [setScrollProgress, setShipPosition]);
+  }, [seaPath, projects, setScrollProgress, setShipPosition, setSpyglass]);
 
   return (
     <>
@@ -134,6 +145,7 @@ export default function MapContainer() {
             position: 'absolute',
             left: '50%',
             top: '50%',
+            transformOrigin: '0 0',
           }}
         >
           <svg
@@ -141,25 +153,7 @@ export default function MapContainer() {
             width={MAP_WIDTH}
             height={MAP_HEIGHT}
           >
-            {waveData.map((w, i) => (
-              <g key={i} transform={`translate(${w.x}, ${w.y})`}>
-                <path
-                  d="M -8 0 Q -4 -3 0 0 Q 4 3 8 0"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.15)"
-                  strokeWidth="1"
-                >
-                  <animate
-                    attributeName="opacity"
-                    values="0.1;0.3;0.1"
-                    dur={`${w.dur}s`}
-                    begin={`${w.delay}s`}
-                    repeatCount="indefinite"
-                  />
-                </path>
-              </g>
-            ))}
-
+            <OceanBackground />
             <SeaPath />
 
             {projects.map((project, i) => (

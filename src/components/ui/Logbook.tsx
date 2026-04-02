@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { X, ExternalLink, GitBranch } from 'lucide-react';
 import { useStore } from '../../store/useStore';
+import MediaGallery from './MediaViewer';
 
 export default function Logbook() {
   const { isLogbookOpen, activeProjectId, projects, closeLogbook } = useStore();
@@ -76,7 +77,7 @@ export default function Logbook() {
                 </p>
               </div>
 
-              {/* Image gallery */}
+              {/* Image gallery (legacy) */}
               {project.images.length > 0 && (
                 <div className="mb-6">
                   <div className="grid grid-cols-2 gap-2">
@@ -96,6 +97,9 @@ export default function Logbook() {
                   </div>
                 </div>
               )}
+
+              {/* Rich media gallery */}
+              <MediaGallery media={project.media} />
 
               {/* Technologies — wax seal badges */}
               <div className="mb-6">

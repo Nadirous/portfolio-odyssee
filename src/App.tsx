@@ -9,6 +9,8 @@ import Logbook from './components/ui/Logbook';
 import Compass from './components/ui/Compass';
 import ListMode from './components/ui/ListMode';
 import AdminPanel from './components/admin/AdminPanel';
+import ContactSection from './components/ui/ContactSection';
+import SpyglassOverlay from './components/ui/SpyglassOverlay';
 import EasterEggs from './components/ui/EasterEggs';
 import './App.css';
 
@@ -35,20 +37,12 @@ function App() {
         <>
           <HeroSection />
           <MapContainer />
-
-          {/* Footer */}
-          <footer className="relative z-10 py-12 text-center bg-ocean-900">
-            <p className="font-serif text-parchment-500 text-sm">
-              Fin du voyage — pour l'instant.
-            </p>
-            <p className="text-parchment-600 text-xs mt-2 font-serif">
-              Construit avec React, GSAP, et une pincée de magie maritime.
-            </p>
-          </footer>
+          <ContactSection />
         </>
       )}
 
       {/* Modals & overlays */}
+      <SpyglassOverlay />
       <Logbook />
       <AdminPanel />
       <EasterEggs />
