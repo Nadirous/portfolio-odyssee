@@ -4,7 +4,6 @@ import {
   X, Plus, Trash2, Upload,
   Map, Palette, FileText, Settings, Lock
 } from 'lucide-react';
-import { Octokit } from '@octokit/rest';
 import { useStore, type Project } from '../../store/useStore';
 
 function AdminLogin({ onAuth }: { onAuth: () => void }) {
@@ -183,16 +182,19 @@ export default function AdminPanel() {
     setPublishStatus('saving');
     try {
       const [owner, repo] = meta.githubRepo.split('/');
-      const octokit = new Octokit({ auth: meta.githubToken });
+      const apiBase = `https://api.github.com/repos/${owner}/${repo}`;
+      const headers = {
+        Authorization: `token ${meta.githubToken}`,
+        Accept: 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+      };
 
       // Get current file SHA
       let sha: string | undefined;
       try {
-        const { data } = await octokit.repos.getContent({
-          owner, repo,
-          path: 'src/data/config.json',
-        });
-        if (!Array.isArray(data) && 'sha' in data) {
+        const res = await fetch(`${apiBase}/contents/src/data/config.json`, { headers });
+        if (res.ok) {
+          const data = await res.json();
           sha = data.sha;
         }
       } catch {
@@ -201,18 +203,26 @@ export default function AdminPanel() {
 
       const content = btoa(unescape(encodeURIComponent(JSON.stringify(getConfig(), null, 2))));
 
-      await octokit.repos.createOrUpdateFileContents({
-        owner, repo,
-        path: 'src/data/config.json',
-        message: '🗺️ Update portfolio config via Cartographer',
-        content,
-        ...(sha ? { sha } : {}),
+      const res = await fetch(`${apiBase}/contents/src/data/config.json`, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({
+          message: '🗺️ Update portfolio config via Cartographer',
+          content,
+          ...(sha ? { sha } : {}),
+        }),
       });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || `HTTP ${res.status}`);
+      }
 
       setPublishStatus('success');
       setTimeout(() => setPublishStatus('idle'), 3000);
     } catch (err) {
       console.error('Publish failed:', err);
+      alert('Erreur: ' + (err instanceof Error ? err.message : String(err)));
       setPublishStatus('error');
       setTimeout(() => setPublishStatus('idle'), 3000);
     }
