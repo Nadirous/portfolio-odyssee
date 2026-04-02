@@ -73,7 +73,11 @@ export interface AppState {
 }
 
 export const useStore = create<AppState>((set, get) => ({
-  meta: configData.meta,
+  meta: {
+    ...configData.meta,
+    // Load token from localStorage (never stored in the public repo)
+    githubToken: localStorage.getItem('portfolio_github_token') || '',
+  },
   biome: configData.biome,
   projects: configData.projects,
   adminPassword: configData.adminPassword,
@@ -96,7 +100,13 @@ export const useStore = create<AppState>((set, get) => ({
   toggleMusic: () => set((s) => ({ isMusicPlaying: !s.isMusicPlaying })),
   setShipPosition: (pos) => set({ shipPosition: pos }),
 
-  updateMeta: (meta) => set((s) => ({ meta: { ...s.meta, ...meta } })),
+  updateMeta: (meta) => {
+    // Persist token to localStorage when it changes
+    if (meta.githubToken !== undefined) {
+      localStorage.setItem('portfolio_github_token', meta.githubToken);
+    }
+    set((s) => ({ meta: { ...s.meta, ...meta } }));
+  },
   updateBiome: (biome) => set((s) => ({ biome: { ...s.biome, ...biome } })),
   addProject: (project) => set((s) => ({ projects: [...s.projects, project] })),
   updateProject: (id, data) =>
@@ -107,6 +117,8 @@ export const useStore = create<AppState>((set, get) => ({
     set((s) => ({ projects: s.projects.filter((p) => p.id !== id) })),
   getConfig: () => {
     const { meta, biome, projects, adminPassword } = get();
-    return { meta, biome, projects, adminPassword };
+    // Exclude token from the config that gets published
+    const { githubToken: _, ...safeMeta } = meta;
+    return { meta: { ...safeMeta, githubToken: '' }, biome, projects, adminPassword };
   },
 }));
