@@ -28,7 +28,12 @@
       "longDescription": "Une application web complète construite avec React et Node.js. Ce projet m'a permis de maîtriser les fondamentaux du développement moderne.",
       "position": 15,
       "images": [],
-      "technologies": ["React", "Node.js", "MongoDB", "Express"],
+      "technologies": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Express"
+      ],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "palm-tree"
@@ -40,7 +45,12 @@
       "longDescription": "Architecture distribuée avec plusieurs microservices communiquant via des files de messages. Déployé sur Kubernetes.",
       "position": 35,
       "images": [],
-      "technologies": ["TypeScript", "Docker", "Kubernetes", "RabbitMQ"],
+      "technologies": [
+        "TypeScript",
+        "Docker",
+        "Kubernetes",
+        "RabbitMQ"
+      ],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "server"
@@ -52,7 +62,12 @@
       "longDescription": "Un design system complet avec composants réutilisables, documentation Storybook, et tests visuels automatisés.",
       "position": 55,
       "images": [],
-      "technologies": ["React", "Storybook", "Figma", "CSS-in-JS"],
+      "technologies": [
+        "React",
+        "Storybook",
+        "Figma",
+        "CSS-in-JS"
+      ],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "lighthouse"
@@ -64,7 +79,12 @@
       "longDescription": "Un système d'IA capable de générer du contenu créatif en utilisant des modèles de langage avancés et du fine-tuning.",
       "position": 80,
       "images": [],
-      "technologies": ["Python", "PyTorch", "FastAPI", "React"],
+      "technologies": [
+        "Python",
+        "PyTorch",
+        "FastAPI",
+        "React"
+      ],
       "githubUrl": "",
       "liveUrl": "",
       "icon": "brain"
